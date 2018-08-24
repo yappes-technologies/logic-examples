@@ -1,0 +1,11 @@
+//yprequest.query is used to access the API request URL paramters
+var queryp=yprequest.query; //provides { "word":"Yappes Technologies" }
+
+var query=queryp.word; //provides { "Yappes Technologies" }
+
+//Converts string to camel case.
+var camc=_.camelCase(query); //Using Lodash library {https://lodash.com/} provides { yappesTechnologies }
+
+ypresponse.status = 200;
+ypresponse.body=camc;
+ypresponse.headers['Content-Type']="application/json";

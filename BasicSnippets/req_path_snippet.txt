@@ -1,0 +1,14 @@
+//yprequest.params provides access to the API request parameters details
+var path=yprequest.params; //provides { "word":"Yappes" }
+
+var newp=path.word; // provides { "Yappes" }
+
+//The split() method is used to split a string into an array of substrings, and returns the new array.
+var newspl=newp.split(""); // provides { "Y,a,p,p,e,s" }
+
+//Reverses array so that the first element becomes the last, the second element becomes the second to last, and so on.
+_.reverse(newspl); //Using Lodash library {https://lodash.com/} provides { "s,e,p,p,a,Y" }
+
+ypresponse.status = 200;
+ypresponse.body="Reverse array : " +newspl;
+ypresponse.headers['Content-Type']="application/json";
