@@ -1,0 +1,15 @@
+var mongo = new ypMongoConnector('mongodb'); //configure mongoDB from "Remote Sources tab"
+
+//yrequest.body provides access to API request payload
+var reqPayload = yprequest.body;// provides { "name" : "Kingfisher" , "quantity" : "20" , "type" : "IPA" }
+var collectionName = Beers";
+var query = {"name":reqPayload.name}; // provides { "Kingfisher" }
+var updateOperator = {$set:{"quantity":reqPayload.quantity,"type":reqPayload.type}};
+var options = {"upsert":false,"multi":false};
+
+// Update the collection of beers for name with reqPayload quantity , type value
+var res=mongo.update(collectionName,query,updateOperator,options);
+
+ypresponse.status = 200;
+ypresponse.body=mongo.remoteResponse;
+ypresponse.headers['Content-Type']="application/json";

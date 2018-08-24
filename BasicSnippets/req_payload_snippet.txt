@@ -1,0 +1,9 @@
+//yprequest.body is used to access the API request payload
+var body=yprequest.body; //provides { "word":"Yappes Technologies" }
+
+var word=body.word; //provides { "Yappes Technologies" }
+var size=_.size(word); //Using Lodash library {https://lodash.com/} provides { "19" }
+
+ypresponse.status = 200;
+ypresponse.body=size;
+ypresponse.headers['Content-Type']="application/json";
