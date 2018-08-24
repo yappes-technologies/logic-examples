@@ -1,0 +1,21 @@
+var mongo = new ypMongoConnector('mongodb'); //configure mongoDB from "Remote Sources tab"
+
+//yprequest.query provides access to the API request URL paramters
+var query=yprequest.query; // provides { "name":"Kingfisher" }
+var value=query.name; // provides { "Kingfisher" }
+var collectionName = "beers";
+var query = {"name":value}; // provides { "Kingfisher" }
+var limit = 5;
+
+// Query the collection for beers with name as Kingfisher
+var res=mongo.find(collectionName,query,limit);
+if(res.length>0)
+{
+   ypresponse.status = 200;
+   ypresponse.body = mongo.remoteResponse;
+   ypresponse.headers['Content-Type']="application/json";
+}
+else
+  {
+    ypresponse.body="No data found";
+  }

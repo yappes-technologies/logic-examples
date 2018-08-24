@@ -1,0 +1,33 @@
+var mysqlobj = new ypMysqlConnector('database'); // configure MySQL from "Remote Sources tab"
+
+//yprequest.query is used to access the request URL parameters
+var qstr=yprequest.query; //provides { "cid":"1" , "popularity":"22" }
+
+var cid=qstr.cid; //provides { "1" }
+var popu=qstr.popularity; // provides { "22" }
+var query="select * from tripeazzedata.cities where cid=?;";
+
+//array of parameters needs to be used in the MySQL query.
+var parameters=[cid];
+
+//mysqlobj.select performs select operation of the query
+var res=mysqlobj.select(query,parameters);
+if(res.length>0)
+  {
+    var query1="update tripeazzedata.cities set popularity = ? where cid=?;";
+    var parameters1=[popu,cid];
+    //mysqlobj.execute executes the query
+    mysqlobj.execute(query1,parameters1);
+    
+    var query2="select * from tripeazzedata.cities where cid=?;";
+    var parameters2=[cid];
+    mysqlobj.select(query2,parameters2);
+    ypresponse.status = 200;
+    //remoteResponse holds the results obtained from the execution of MySQL statments
+    ypresponse.body= mysqlobj.remoteResponse;
+    ypresponse.headers['Content-Type']="application/json";
+  }
+else
+  {
+    ypresponse.body="Invalid Company ID";
+  }

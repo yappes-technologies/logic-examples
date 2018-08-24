@@ -1,0 +1,20 @@
+//yprequest.query is used to access the API request URL paramters
+var query=yprequest.query; //provides { "name":"user123" }
+
+var uname=query.name; // provides { "user123" }
+
+//Converts string, as space separated words, to upper case.
+var uc=_.upperCase(uname); //Using Lodash library {https://lodash.com/} provides { "USER123" }
+
+//provides access to incoming request path information
+var path=yprequest.path; //provides { /engineering/books }
+
+//yprequest.body is used to access the API request payload
+var body=yprequest.body; // provides { "book_name":"Aptitude","quantity":"12" }
+
+var bookn=body.book_name; // provides { "Aptitude" }
+var quan=body.quantity; // provides { "12" }
+
+ypresponse.status = 200;
+ypresponse.body="Query parameters:" +uc +" Path parameters" +path +" and body parameters are Book Name :" +bookn +" ,Quantity:" +quan;
+ypresponse.headers['Content-Type']="application/json";

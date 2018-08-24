@@ -1,0 +1,25 @@
+var mysqlobj = new ypMysqlConnector('database'); // configure MySQL from "Remote Sources tab"
+
+// yprequest.params provides access to the API request parameters details
+var path=yprequest.params; //provides { "address":"Hampi" }
+
+var addr=path.address; // provides { "Hampi" }
+var query="select * from tripeazzedata.cities where cname=?";
+
+//array of parameters needs to be used in the MySQL query.
+var parameters=[addr];
+
+//mysql.select returns results of the query as an Array.
+var res=mysqlobj.select(query,parameters);
+if(res)
+  {
+    ypresponse.status = 200;
+    
+    //remoteResponse holds the results obtained from the execution of MySQL statments
+    ypresponse.body=mysqlobj.remoteResponse;
+    ypresponse.headers['Content-Type']="application/json";
+  }
+else
+  {
+    ypresponse.body="Please check the address";
+  }

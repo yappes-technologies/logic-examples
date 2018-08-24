@@ -1,0 +1,35 @@
+var mysqlobj = new ypMysqlConnector('database'); //configure MySQL from "Remote Sources tab"
+
+//yprequest.body is used to access the API request payload
+var body=yprequest.body; // provides { "cid":"1" , "cname":"Silchar" , "popularity" : "3" , "companyname":"infosys" }
+
+var cid=body.cid; //provides { "1" }
+var cname=body.cname; //provides { "Silchar" }
+var popularity=body.popularity; //provides { "3" }
+var companyname=body.companyname; //provides { "Inofsys" }
+var query="insert into tripeazzedata.cities (cid,cname,popularity,companyname) values (?,?,?,?);";
+
+//array of parameters needs to be used in the MySQL query.
+var parameters=[cid,cname,popularity,companyname];
+
+//mysqlobj.execute executes the query
+var res=mysqlobj.execute(query,parameters);
+if(res)
+  {
+    var query1="select * from tripeazzedata.cities where cid=?";
+    var parameters1=[cid];
+    
+    //mysqlobj.select performs select operation of the query
+    mysqlobj.select(query1,parameters1);
+    
+    ypresponse.status = 200;
+    
+    //remoteResponse holds the results obtained from the execution of MySQL query
+    ypresponse.body=mysqlobj.remoteResponse;
+    ypresponse.headers['Content-Type']="application/json";
+    
+  }
+else
+  {
+    ypresponse.body="Failed to execute";
+  }
