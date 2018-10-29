@@ -1,0 +1,11 @@
+//ypenv provides access to environment variables 
+var environmentObject=ypenv.getEnvironmentDetails();
+//provides {"firstName":"Yappes ","lastName":"Technologies"}
+
+var name = environmentObject.firstName + ypenv.getEnvironmentDetails().lastName;
+//environmentObject.firstName="Yappes " , ypenv.getEnvironmentDetails().lastName="Technologies"
+//"Yappes Technologies"
+
+ypresponse.body = name; 
+ypresponse.status = 200; 
+ypresponse.headers['Content-Type']='application/json';
