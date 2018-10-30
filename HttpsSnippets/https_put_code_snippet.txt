@@ -1,0 +1,31 @@
+//Configure Webservice from "Remote Sources tab" 
+//Url for the operation will be retrived form the configured webservice connector 
+
+var logicCodeNameObject = new ypWebserviceConnector('NameofRemoteSource');
+
+// Setting up options
+var options = {
+	path: '/posts',
+	headers:{
+		'Content-Type':'application/json',
+		'api-key':'key'
+		}
+	qs:{}
+};
+
+// Setting up payload
+var data={
+	"name":"John",
+	"age":"22"
+};
+
+//wsput does the HTTP/S PUT operation
+logicCodeNameObject.wsput(options,data);
+
+//logicCodeNameObject.remoteResponse holds the response from the operation
+var response=logicCodeNameObject.remoteResponse;
+
+
+ypresponse.body = response;
+ypresponse.status = 200; 
+ypresponse.headers['Content-Type']='application/json';
