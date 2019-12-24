@@ -1,0 +1,39 @@
+var reqPayload = yprequest.body;
+
+// yprequest.params provides access to the API request parameters details
+var reqParams = yprequest.params;
+
+// configure GraphQl from "Remote Sources tab"
+var graph = new ypGraphQlConnector('graph');
+
+//Meta-data for the specific Url  
+var options = {
+path: '/',
+headers:{'Content-Type':'application/json'},
+qs:{}};
+
+//'Query' statement for graphql operations
+var query=`
+query{
+books{
+  title
+}  
+}`;
+
+//query with 'Mutation' as an operation 
+var mutation=`{
+mutation{
+  addBook(title:"bookname",author:"authorname")
+}
+}`;
+//custom values for the schema in graphql server
+var variables={};
+
+//graphql.query can support 'Query' and 'Mutation' 
+graph.query(options,query,variables);
+//graph.query(options,mutation,variables);
+
+//remoteResponse holds the results obtained from the execution of graphql statments
+ypresponse.body = graph.remoteResponse; 
+ypresponse.status = 200; 
+ypresponse.headers['Content-Type']='application/json';
