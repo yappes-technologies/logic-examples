@@ -1,0 +1,25 @@
+var reqPayload = yprequest.body;
+
+// yprequest.params provides access to the API request parameters details
+var reqParams = yprequest.params;
+
+var mariatest = new ypMariadbConnector('mariaTest01');
+// configure MariaDB from "Remote Sources tab"
+
+var statement="select * from cars ";
+
+//array of parameters needs to be used in the MariaDB query.
+var parameters = [];
+
+//MariaDB.select returns results of the query as an Array.
+mariatest.select(statement,parameters);
+
+//remoteResponse holds the results obtained from the execution of MariaDB statments
+ypresponse.body = mariatest.remoteResponse;
+ypresponse.status = 200; 
+ypresponse.headers['Content-Type']='application/json';
+
+
+
+
+
