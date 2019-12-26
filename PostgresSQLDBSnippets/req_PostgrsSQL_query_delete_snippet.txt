@@ -1,0 +1,18 @@
+var reqPath = yprequest.path;  // "/new/data/delete"
+
+var reqMethod = yprequest.method; // DELETE
+
+var reqPayload = yprequest.body; // {"id":1}
+
+var logicCodeName = new ypPostgresConnector('Postgres RemoteName');
+
+const query = {
+  text: 'DELETE FROM users WHERE id = $1',
+  values: reqPayload.id,
+}
+
+logicCodeName.query(query);
+
+ypresponse.status = 200
+ypresponse.body = logicCodeName.remoteResponse
+ypresponse.headers['Content-Type']="application/json";

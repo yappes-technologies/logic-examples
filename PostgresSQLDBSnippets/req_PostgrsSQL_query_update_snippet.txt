@@ -1,0 +1,18 @@
+var reqPath = yprequest.path;      // "/new/data/update"
+
+var reqMethod = yprequest.method; // POST
+
+var reqPayload = yprequest.body; // {"id":1,"name":"testupdate"}
+
+var logicCodeName = new ypPostgresConnector('Postgres RemoteName');
+
+const query = {
+  text: 'UPDATE test SET name = $2 WHERE id = $3',
+  values: [reqPayload.id,reqPayload.name],
+}
+
+logicCodeName.query(query);
+
+ypresponse.status = 200
+ypresponse.body = logicCodeName.remoteResponse
+ypresponse.headers['Content-Type']="application/json";

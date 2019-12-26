@@ -1,0 +1,17 @@
+var reqPath = yprequest.path; 
+
+var reqMethod = yprequest.method; 
+
+var logicCodeName = new ypPostgresConnector('Postgres RemoteName');
+
+var query = {
+    text: 'SELECT * FROM test',
+    values: [],
+    rowMode: 'array'
+  } 
+
+logicCodeName.query(query);
+
+ypresponse.status = 200
+ypresponse.body = logicCodeName.remoteResponse
+ypresponse.headers['Content-Type']="application/json";
