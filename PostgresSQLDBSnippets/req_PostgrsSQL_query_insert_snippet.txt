@@ -1,0 +1,18 @@
+var reqPath = yprequest.path; // provides "/new/value/insert"
+
+var reqMethod = yprequest.method; // provides "POST"
+
+var reqPayload = yprequest.body;      // {"id":1,"name":"test"}
+
+var logicCodeName = new ypPostgresConnector('Postgres RemoteName');
+
+const query = {
+  text: 'INSERT INTO test(id,name) VALUES($1, $2)',
+  values: [reqPayload.id,reqPayload.name],
+}
+
+logicCodeName.query(query);
+
+ypresponse.status = 200
+ypresponse.body = logicCodeName.remoteResponse
+ypresponse.headers['Content-Type']="application/json";
