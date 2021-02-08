@@ -1,0 +1,35 @@
+var oracleobj = new ypOracleConnector('database'); //configure oracle from "Remote Sources tab"
+
+//yprequest.body is used to access the API request payload
+var body=yprequest.body; // provides { "cid":"1" , "cname":"Silchar" , "popularity" : "3" , "companyname":"infosys" }
+
+var cid=body.cid; //provides { "1" }
+var cname=body.cname; //provides { "Silchar" }
+var popularity=body.popularity; //provides { "3" }
+var companyname=body.companyname; //provides { "Inofsys" }
+var query="insert into tripeazzedata.cities (cid,cname,popularity,companyname) values (:1,:2,:3,:4);";
+
+//array of parameters needs to be used in the oracle query.
+var parameters={":1":cid,":2":cname,":3":popularity,":4":companyname};
+
+//oracleobj.execute executes the query
+var res=oracleobj.execute(query,parameters);
+if(res)
+  {
+    var query1="select * from tripeazzedata.cities where cid=?";
+    var parameters1={":cid":cid};
+    
+    //oracleobj.select performs select operation of the query
+    oracleobj.select(query1,parameters1);
+    
+    ypresponse.status = 200;
+    
+    //remoteResponse holds the results obtained from the execution of oracle query
+    ypresponse.body=oracleobj.remoteResponse;
+    ypresponse.headers['Content-Type']="application/json";
+    
+  }
+else
+  {
+    ypresponse.body="Failed to execute";
+  }

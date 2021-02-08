@@ -1,0 +1,38 @@
+var oracleobj = new ypOracleConnector('database'); // configure oracle from "Remote Sources tab"
+
+//yprequest.query is used to access the request URL parameters
+var qstr=yprequest.query; //provides { "cid":"1" , "popularity":"22" }
+
+var cid=qstr.cid; //provides { "1" }
+var popu=qstr.popularity; // provides { "22" }
+var query="select * from tripeazzedata.cities where cid=:cid";
+
+//array of parameters needs to be used in the oracle query.
+var parameters={":cid":cid};
+
+//oracleobj.select performs select operation of the query
+var res=oracleobj.select(query,parameters);
+if(res.length>0)
+  {
+    var query1="update tripeazzedata.cities set popularity = :popu where cid=:cid;";
+    var parameters1={":popu":popu,":cid":cid};
+    //
+  oracleobj.execute executes the query
+    
+  oracleobj.execute(query1,parameters1);
+    
+    var query2="select * from tripeazzedata.cities where cid=:cid";
+    var parameters2={":cid":cid};
+    
+  oracleobj.select(query2,parameters2);
+    ypresponse.status = 200;
+    //remoteResponse holds the results obtained from the execution of 
+  oracle statments
+    ypresponse.body= 
+  oracleobj.remoteResponse;
+    ypresponse.headers['Content-Type']="application/json";
+  }
+else
+  {
+    ypresponse.body="Invalid Company ID";
+  }
