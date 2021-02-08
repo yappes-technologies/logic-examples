@@ -16,7 +16,7 @@ var parameters={":1":cid,":2":cname,":3":popularity,":4":companyname};
 var res=oracleobj.execute(query,parameters);
 if(res)
   {
-    var query1="select * from tripeazzedata.cities where cid=?";
+    var query1="select * from tripeazzedata.cities where cid=:cid";
     var parameters1={":cid":cid};
     
     //oracleobj.select performs select operation of the query
