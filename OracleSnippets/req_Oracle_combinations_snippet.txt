@@ -1,0 +1,35 @@
+ var oracleobj = new ypOracleConnector('database'); //configure oracle from "Remote Sources tab"
+
+//yprequest.body is used to access the API request payload
+var body=yprequest.body; // provides { "cname":"Hampi" , "popularity":"5" } 
+var cname=body.cname; //provides { "Hampi" }
+var popularity=body.popularity; //provides { "5" }
+
+//yprequest.query is used to access the API request URL paramters
+var query=yprequest.query; // provides { "companyname":"Yappes" }
+var companyname=query.companyname; //provides { "Yappes" }
+
+//yprequest.params provides access the API request parameters details
+var path=yprequest.params; // provides { "cid" : "1" }
+var cid=path.cid; // provides { "1" }
+
+var query="update tripeazzedata.cities set cname=:cname , popularity=:popularity , companyname=:companyname where cid=:cid";
+
+//array of parameters needs to be used in the oracle query.
+var parameters={":cname":cname,":popularity":popularity,":companyname":companyname,":cid":cid};
+
+//oracleobj.execute executes the query
+var res=oracleobj.execute(query,parameters);
+if(res)
+  {
+    var query1="select * from tripeazzedata.cities where cid=:1";
+    var parameters1={":1":cid};
+    oracleobj.select(query1,parameters1);
+    ypresponse.status = 200;
+    ypresponse.body=oracleobj.remoteResponse;
+    ypresponse.headers['Content-Type']="application/json";
+  }
+else
+  {
+    ypresponse.body="Failed";      
+  }

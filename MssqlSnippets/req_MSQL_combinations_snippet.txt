@@ -1,0 +1,35 @@
+var mssqlobj = new ypMssqlConnector('database'); //configure MsSQL from "Remote Sources tab"
+
+//yprequest.body is used to access the API request payload
+var body=yprequest.body; // provides { "cname":"Hampi" , "popularity":"5" } 
+var cname=body.cname; //provides { "Hampi" }
+var popularity=body.popularity; //provides { "5" }
+
+//yprequest.query is used to access the API request URL paramters
+var query=yprequest.query; // provides { "companyname":"Yappes" }
+var companyname=query.companyname; //provides { "Yappes" }
+
+//yprequest.params provides access the API request parameters details
+var path=yprequest.params; // provides { "cid" : "1" }
+var cid=path.cid; // provides { "1" }
+
+var query="update tripeazzedata.cities set cname=? , popularity=? , companyname=? where cid=?";
+
+//array of parameters needs to be used in the MsSQL query.
+var parameters=[cname,popularity,companyname,cid];
+
+//mssqlobj.execute executes the query
+var res=mssqlobj.execute(query,parameters);
+if(res)
+  {
+    var query1="select * from tripeazzedata.cities where cid=?";
+    var parameters1=[cid];
+    mssqlobj.select(query1,parameters1);
+    ypresponse.status = 200;
+    ypresponse.body=mssqlobj.remoteResponse;
+    ypresponse.headers['Content-Type']="application/json";
+  }
+else
+  {
+    ypresponse.body="Failed";      
+  }

@@ -1,0 +1,25 @@
+var oracleobj = new ypOracleConnector('database'); // configure oracle from "Remote Sources tab"
+
+// yprequest.params provides access to the API request parameters details
+var path=yprequest.params; //provides { "address":"Hampi" }
+
+var addr=path.address; // provides { "Hampi" }
+var query="select * from tripeazzedata.cities where cname=:addr";
+
+//array of parameters needs to be used in the oracle query.
+var parameters={":addr":addr};
+
+//oracle.select returns results of the query as an Array.
+var res=oracleobj.select(query,parameters);
+if(res)
+  {
+    ypresponse.status = 200;
+    
+    //remoteResponse holds the results obtained from the execution of oracle statments
+    ypresponse.body=oracleobj.remoteResponse;
+    ypresponse.headers['Content-Type']="application/json";
+  }
+else
+  {
+    ypresponse.body="Please check the address";
+  }

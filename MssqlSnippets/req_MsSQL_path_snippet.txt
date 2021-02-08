@@ -1,0 +1,25 @@
+var mssqlobj = new ypMssqlConnector('database'); // configure MsSQL from "Remote Sources tab"
+
+// yprequest.params provides access to the API request parameters details
+var path=yprequest.params; //provides { "address":"Hampi" }
+
+var addr=path.address; // provides { "Hampi" }
+var query="select * from tripeazzedata.cities where cname=?";
+
+//array of parameters needs to be used in the MsSQL query.
+var parameters=[addr];
+
+//mssql.select returns results of the query as an Array.
+var res=mssqlobj.select(query,parameters);
+if(res)
+  {
+    ypresponse.status = 200;
+    
+    //remoteResponse holds the results obtained from the execution of MsSQL statments
+    ypresponse.body=mssqlobj.remoteResponse;
+    ypresponse.headers['Content-Type']="application/json";
+  }
+else
+  {
+    ypresponse.body="Please check the address";
+  }
